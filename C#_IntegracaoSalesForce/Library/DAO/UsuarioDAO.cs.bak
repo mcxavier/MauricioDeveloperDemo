@@ -1,0 +1,451 @@
+﻿using NpgsqlTypes;
+using PortalParceiroLibrary.BO;
+using PortalParceiroLibrary.CO;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Text;
+
+namespace PortalParceiroLibrary.DAO
+{
+    public static class UsuarioDAO
+    {
+        public static int AdicionarHashNovaSenha(BancoDadosBO db, int idUsuario, string hashNovaSenha, int idUsuarioSolicitante)
+        {
+            db.AddParam("idUsuario", NpgsqlDbType.Integer, idUsuario);
+            db.AddParam("hashNovaSenha", NpgsqlDbType.Varchar, hashNovaSenha);
+            db.AddParam("idUsuarioSolicitante", NpgsqlDbType.Integer, idUsuarioSolicitante);
+
+            StringBuilder query = new StringBuilder();
+            query.Append("UPDATE usuario SET ");
+            query.Append("hash_nova_senha = @hashNovaSenha, id_usuario_hash_nova_senha = @idUsuarioSolicitante, ");
+            query.Append("data_hora_hash_nova_senha = now() ");
+            query.Append("WHERE id_usuario = @idUsuario");
+
+            if (idUsuarioSolicitante <= 0)
+            {
+                query.Replace("@idUsuarioSolicitante", "NULL");
+            }
+
+            return db.ExecuteNonQuery(query.ToString());
+        }
+
+        public static int AdicionarPermissaoAcesso(BancoDadosBO db, int idUsuario, short permissaoAcesso)
+        {
+            db.AddParam("idUsuario", NpgsqlDbType.Integer, idUsuario);
+            db.AddParam("permissaoAcesso", NpgsqlDbType.Smallint, permissaoAcesso);
+            db.AddParam("permitido", NpgsqlDbType.Boolean, true);
+
+            StringBuilder query = new StringBuilder();
+            query.Append("INSERT INTO permissao_acesso_usuario (id_usuario, id_permissao_acesso, permitido) ");
+            query.Append("VALUES (@idUsuario, @permissaoAcesso, @permitido) ");
+
+            return db.ExecuteNonQuery(query.ToString());
+        }
+
+        public static int AlterarSenhaUsuario(BancoDadosBO db, int idUsuario, string novaSenha)
+        {
+            db.AddParam("idUsuario", NpgsqlDbType.Integer, idUsuario);
+            db.AddParam("novaSenha", NpgsqlDbType.Varchar, novaSenha);
+
+            StringBuilder query = new StringBuilder();
+            query.Append("UPDATE usuario SET senha = @novaSenha, hash_nova_senha = '', hash_ativacao = '' ");
+            query.Append("WHERE id_usuario = @idUsuario ");
+
+            return db.ExecuteNonQuery(query.ToString());
+        }
+
+
+        public static int AlterarIdSalesforce(BancoDadosBO db, int idUsuario, string idFromSalesforce)
+        {
+            db.AddParam("idUsuario", NpgsqlDbType.Integer, idUsuario);
+            db.AddParam("idSalesforce", NpgsqlDbType.Varchar, idFromSalesforce);
+
+            StringBuilder query = new StringBuilder();
+            query.Append("UPDATE usuario SET id_salesforce = @idSalesforce ");
+            query.Append("WHERE id_usuario = @idUsuario ");
+
+            return db.ExecuteNonQuery(query.ToString());
+        }
+
+
+        public static string GetIdSalesforce(BancoDadosBO db, int idUsuario)
+        {
+            db.AddParam("idUsuario", NpgsqlDbType.Integer, idUsuario);
+            StringBuilder query = new StringBuilder();
+            query.Append("select id_salesforce from  usuario WHERE id_usuario = @idUsuario ");
+
+            return db.ExecuteScalar(query.ToString())?.ToString();
+        }
+
+        public static int AlterarUsuario(BancoDadosBO db, UsuarioBO usuario)
+        {
+            db.AddParam("idUsuario", NpgsqlDbType.Integer, usuario.IdUsuario);
+            db.AddParam("idParceiro", NpgsqlDbType.Integer, usuario.IdParceiro);
+            db.AddParam("nome", NpgsqlDbType.Varchar, usuario.Nome);
+            db.AddParam("email", NpgsqlDbType.Varchar, usuario.Email);
+            db.AddParam("ativo", NpgsqlDbType.Boolean, usuario.Ativo);
+            db.AddParam("vendedor", NpgsqlDbType.Boolean, usuario.Vendedor);
+            db.AddParam("idPerfilUsuario", NpgsqlDbType.Smallint, (short)usuario.IdPerfilUsuario);
+            db.AddParam("atendente", NpgsqlDbType.Boolean, usuario.Atendente);
+
+            StringBuilder query = new StringBuilder();
+            query.Append("UPDATE usuario SET ");
+            query.Append("nome = @nome, ativo = @ativo, vendedor = @vendedor, id_parceiro = @idParceiro, id_perfil_usuario = @idPerfilUsuario, email = @email, atendente = @atendente, codigo_atendimento = @codigoAtendimento ");
+            query.Append("WHERE id_usuario = @idUsuario ");
+
+            if (usuario.CodigoAtendimento.HasValue)
+            {
+                db.AddParam("codigoAtendimento", NpgsqlDbType.Integer, usuario.CodigoAtendimento.Value);
+            }
+            else
+            {
+                query.Replace("@codigoAtendimento", "NULL");
+            }
+
+            return db.ExecuteNonQuery(query.ToString());
+        }
+
+        public static DataTable CarregarEmailsDosAdministradoresAtivos(BancoDadosBO db, int idParceiro)
+        {
+            db.AddParam("idParceiro", NpgsqlDbType.Integer, idParceiro);
+            db.AddParam("perfilUsuarioAdministrador", NpgsqlDbType.Smallint, UsuarioCO.PerfilUsuario.Administrador);
+
+            StringBuilder query = new StringBuilder();
+            query.Append(@"
+                SELECT u.email
+                FROM usuario u
+                WHERE u.id_parceiro = @idParceiro
+                AND u.id_perfil_usuario = @perfilUsuarioAdministrador
+                AND u.ativo = true
+            ");
+
+            return db.Select(query.ToString());
+        }
+
+        public static DataTable CarregarPermissaoAcessoUsuario(BancoDadosBO db, int idUsuario, UsuarioCO.PermissaoAcesso permissaoAcesso)
+        {
+            db.AddParam("idUsuario", NpgsqlDbType.Integer, idUsuario);
+            db.AddParam("idPermissaoAcesso", NpgsqlDbType.Smallint, (short)permissaoAcesso);
+            db.AddParam("permitido", NpgsqlDbType.Boolean, true);
+
+            StringBuilder query = new StringBuilder();
+            query.Append("SELECT id_usuario, id_permissao_acesso, permitido ");
+            query.Append("FROM permissao_acesso_usuario ");
+            query.Append("WHERE id_usuario = @idUsuario AND permitido = @permitido AND id_permissao_acesso = @idPermissaoAcesso ");
+
+            return db.Select(query.ToString());
+        }
+
+        public static DataTable CarregarUsuario(BancoDadosBO db, int idUsuario, int idParceiroAcesso)
+        {
+            db.AddParam("idUsuario", NpgsqlDbType.Integer, idUsuario);
+            db.AddParam("idParceiroAcesso", NpgsqlDbType.Integer, idParceiroAcesso);
+            db.AddParam("idParceiroPrincipal", NpgsqlDbType.Integer, ParceiroCO.IdParceiroPrincipal);
+
+            StringBuilder query = new StringBuilder();
+            query.Append("SELECT t1.id_usuario, t1.email, t1.nome, t1.senha, t1.ativo, t1.vendedor, t1.hash_ativacao, t1.id_parceiro, t2.nome AS nome_parceiro, ");
+            query.Append("t3.id_parceiro AS id_parceiro_afiliador, t3.subdominio, t3.nome AS nome_parceiro_afiliador, t3.nome_fantasia AS nome_fantasia_parceiro_afiliador, ");
+            query.Append("t1.id_perfil_usuario, t1.data_hora_ultimo_acesso, t1.hash_nova_senha, t1.id_usuario_hash_nova_senha, t1.data_hora_hash_nova_senha, ");
+            query.Append("t2.situacao AS situacao_parceiro, t3.situacao AS situacao_parceiro_afiliador, t1.atendente, t1.codigo_atendimento ");
+            query.Append("FROM usuario t1 ");
+            query.Append("INNER JOIN parceiro t2 ON t1.id_parceiro = t2.id_parceiro ");
+            query.Append("INNER JOIN parceiro t3 ON t3.id_parceiro = (CASE WHEN t2.permite_afiliados = 'true' THEN t2.id_parceiro ELSE t2.id_parceiro_afiliador END) ");
+            query.Append("WHERE t1.id_usuario = @idUsuario AND ");
+            query.Append("(t1.id_parceiro = @idParceiroAcesso OR @idParceiroAcesso = @idParceiroPrincipal OR t1.id_parceiro IN (SELECT t0.id_parceiro FROM parceiro t0 WHERE t0.id_parceiro_afiliador = @idParceiroAcesso)) ");
+
+            return db.Select(query.ToString());
+        }
+
+        public static DataTable CarregarUsuario(BancoDadosBO db, string email, int idParceiroAcesso)
+        {
+            db.AddParam("email", NpgsqlDbType.Varchar, email);
+            db.AddParam("idParceiroAcesso", NpgsqlDbType.Integer, idParceiroAcesso);
+            db.AddParam("idParceiroPrincipal", NpgsqlDbType.Integer, ParceiroCO.IdParceiroPrincipal);
+
+            StringBuilder query = new StringBuilder();
+            query.Append("SELECT t1.id_usuario, t1.email, t1.nome, t1.senha, t1.ativo, t1.vendedor, t1.hash_ativacao, t1.id_parceiro, t2.nome AS nome_parceiro, ");
+            query.Append("t3.id_parceiro AS id_parceiro_afiliador, t3.subdominio, t3.nome AS nome_parceiro_afiliador, t3.nome_fantasia AS nome_fantasia_parceiro_afiliador, ");
+            query.Append("t1.id_perfil_usuario, t1.data_hora_ultimo_acesso, t1.hash_nova_senha, t1.id_usuario_hash_nova_senha, t1.data_hora_hash_nova_senha, ");
+            query.Append("t2.situacao AS situacao_parceiro, t3.situacao AS situacao_parceiro_afiliador, t1.atendente, t1.eh_linx ");
+            query.Append("FROM usuario t1 ");
+            query.Append("INNER JOIN parceiro t2 ON t1.id_parceiro = t2.id_parceiro ");
+            query.Append("INNER JOIN parceiro t3 ON t3.id_parceiro = (CASE WHEN t2.permite_afiliados = 'true' THEN t2.id_parceiro ELSE t2.id_parceiro_afiliador END) ");
+            query.Append("WHERE t1.email = @email AND ");
+            query.Append("(t1.id_parceiro = @idParceiroAcesso OR @idParceiroAcesso = @idParceiroPrincipal OR t1.id_parceiro IN (SELECT t0.id_parceiro FROM parceiro t0 WHERE t0.id_parceiro_afiliador = @idParceiroAcesso)) ");
+
+            return db.Select(query.ToString());
+        }
+
+        public static DataTable CarregarUsuario(BancoDadosBO db, string email)
+        {
+            db.AddParam("email", NpgsqlDbType.Varchar, email);
+            db.AddParam("idParceiroPrincipal", NpgsqlDbType.Integer, ParceiroCO.IdParceiroPrincipal);
+
+            StringBuilder query = new StringBuilder();
+            query.Append("SELECT t1.id_usuario, t1.email, t1.nome, t1.senha, t1.ativo, t1.vendedor, t1.hash_ativacao, t1.id_parceiro, t2.nome AS nome_parceiro, ");
+            query.Append("t3.id_parceiro AS id_parceiro_afiliador, t3.subdominio, t3.nome AS nome_parceiro_afiliador, t3.nome_fantasia AS nome_fantasia_parceiro_afiliador, ");
+            query.Append("t1.id_perfil_usuario, t1.data_hora_ultimo_acesso, t1.hash_nova_senha, t1.id_usuario_hash_nova_senha, t1.data_hora_hash_nova_senha, ");
+            query.Append("t2.situacao AS situacao_parceiro, t3.situacao AS situacao_parceiro_afiliador, t1.atendente ");
+            query.Append("FROM usuario t1 ");
+            query.Append("INNER JOIN parceiro t2 ON t1.id_parceiro = t2.id_parceiro ");
+            query.Append("INNER JOIN parceiro t3 ON t3.id_parceiro = (CASE WHEN t2.permite_afiliados = 'true' THEN t2.id_parceiro ELSE t2.id_parceiro_afiliador END) ");
+            query.Append("WHERE t1.email = @email ");
+
+            return db.Select(query.ToString());
+        }
+
+        public static int? CodigoDeAtendimentoDoGerenteDeContasDoHiperador(BancoDadosBO db, int idParceiroLogado)
+        {
+            db.AddParam("idParceiroPrincipal", NpgsqlDbType.Integer, idParceiroLogado);
+
+            StringBuilder query = new StringBuilder();
+            query.Append(@"
+                        select u.codigo_atendimento from parceiro p
+                            INNER JOIN usuario u ON p.id_usuario_vendedor = u.id_usuario
+                        WHERE p.id_parceiro = @idParceiroPrincipal");
+
+            var dt = db.Select(query.ToString());
+
+            int codigoAtendimento = int.TryParse(dt.Rows[0]["codigo_atendimento"].ToString(), out codigoAtendimento) ? codigoAtendimento : 0;
+
+            return codigoAtendimento == (int?)0 ? null : (int?)codigoAtendimento;
+        }
+
+        public static void DefinePermissoesDeAcessoAdministrador(BancoDadosBO db, int idUsuario)
+        {
+            db.AddParam("idUsuario", NpgsqlDbType.Smallint, idUsuario);
+            db.AddParam("PermiteAcessarContaCliente", NpgsqlDbType.Smallint, UsuarioCO.PermissaoAcesso.PermiteAcessarContaCliente);
+            db.AddParam("PermiteVisualizarCusto", NpgsqlDbType.Smallint, UsuarioCO.PermissaoAcesso.PermiteVisualizarCusto);
+            db.AddParam("PermiteProrrogarTrial", NpgsqlDbType.Smallint, UsuarioCO.PermissaoAcesso.PermiteProrrogarTrial);
+
+            StringBuilder query = new StringBuilder();
+            query.Append("insert into permissao_acesso_usuario (@idUsuario, @PermiteAcessarContaCliente, true);");
+            query.Append("insert into permissao_acesso_usuario (@idUsuario, @PermiteVisualizarCusto, true);");
+            query.Append("insert into permissao_acesso_usuario (@idUsuario, @PermiteProrrogarTrial, true);");
+            query.Append("insert into permissao_acesso_usuario (@idUsuario, @PermiteBloquearDesbloquearClientesHiperOnline, true);");
+
+            db.Select(query.ToString());
+        }
+
+        public static int DefinirDataHoraAcessoUsuario(BancoDadosBO db, int idUsuario)
+        {
+            db.AddParam("idUsuario", NpgsqlDbType.Integer, idUsuario);
+
+            StringBuilder query = new StringBuilder();
+            query.Append("UPDATE usuario SET data_hora_ultimo_acesso = now() ");
+            query.Append("WHERE id_usuario = @idUsuario ");
+
+            return db.ExecuteNonQuery(query.ToString());
+        }
+
+        public static int DefinirHashAtivacaoUsuario(BancoDadosBO db, int idUsuario, string hashAtivacao)
+        {
+            db.AddParam("idUsuario", NpgsqlDbType.Integer, idUsuario);
+            db.AddParam("hashAtivacao", NpgsqlDbType.Varchar, hashAtivacao);
+
+            StringBuilder query = new StringBuilder();
+            query.Append("UPDATE usuario SET hash_ativacao = @hashAtivacao ");
+            query.Append("WHERE id_usuario = @idUsuario ");
+
+            return db.ExecuteNonQuery(query.ToString());
+        }
+
+        public static int ExcluirUsuario(BancoDadosBO db, int idUsuario)
+        {
+            db.AddParam("idUsuario", NpgsqlDbType.Integer, idUsuario);
+
+            var query = new StringBuilder();
+
+            query.Append("DELETE FROM usuario ");
+            query.Append("WHERE id_usuario = @idUsuario ");
+
+            return db.ExecuteNonQuery(query.ToString());
+        }
+
+        public static bool ExisteOutroUsuarioComMesmoEmail(BancoDadosBO db, int idUsuario, string email)
+        {
+            db.AddParam("email", NpgsqlDbType.Varchar, email);
+            db.AddParam("idUsuario", NpgsqlDbType.Integer, idUsuario);
+
+            var dtExiste = db.Select("SELECT EXISTS (select id_usuario from usuario where email like @email AND id_usuario <> @idUsuario) AS existe_usuario ");
+
+            return bool.Parse(dtExiste.Rows[0]["existe_usuario"].ToString());
+        }
+
+        public static DataTable GetNomeDosUsuarios(BancoDadosBO db, List<int> idsUsuarios)
+        {
+            var idsUsuariosToQuery = string.Join(",", idsUsuarios);
+            var query = new StringBuilder();
+            query.Append("SELECT id_usuario, nome ");
+            query.Append("FROM usuario ");
+            query.Append($"WHERE id_usuario in ({idsUsuariosToQuery})");
+
+            return db.Select(query.ToString());
+        }
+
+        public static string GetNomeDoUsuarioPorIdExterno(BancoDadosBO db, Guid id)
+        {
+            db.AddParam("id", NpgsqlDbType.Uuid, id);
+
+            var query = "SELECT nome FROM usuario WHERE id_externo=@id";
+
+            return db.ExecuteScalar(query)?.ToString();
+        }
+
+        public static int IncluirUsuario(BancoDadosBO db, UsuarioBO usuario)
+        {
+            db.AddParam("email", NpgsqlDbType.Varchar, usuario.Email);
+            db.AddParam("nome", NpgsqlDbType.Varchar, usuario.Nome);
+            db.AddParam("senha", NpgsqlDbType.Varchar, usuario.Senha);
+            db.AddParam("hashAtivacao", NpgsqlDbType.Varchar, usuario.HashAtivacao);
+            db.AddParam("vendedor", NpgsqlDbType.Boolean, usuario.Vendedor);
+            db.AddParam("ativo", NpgsqlDbType.Boolean, usuario.Ativo);
+            db.AddParam("idParceiro", NpgsqlDbType.Integer, usuario.IdParceiro);
+            db.AddParam("idPerfilUsuario", NpgsqlDbType.Smallint, (short)usuario.IdPerfilUsuario);
+            db.AddParam("atendente", NpgsqlDbType.Boolean, usuario.Atendente);
+
+            int idUsuario = int.Parse(db.ExecuteScalar("SELECT nextval('usuario_id_usuario_seq')").ToString());
+            db.AddParam("idUsuario", NpgsqlDbType.Integer, idUsuario);
+
+            var query = new StringBuilder();
+            query.Append("INSERT INTO usuario ");
+            query.Append("(id_usuario, email, nome, senha, hash_ativacao, ativo, vendedor, id_parceiro, id_perfil_usuario, atendente, codigo_atendimento) ");
+            query.Append("VALUES (@idUsuario, @email, @nome, @senha, @hashAtivacao, @ativo, @vendedor, @idParceiro, @idPerfilUsuario, @atendente, @codigoAtendimento) ");
+
+            if (usuario.CodigoAtendimento.HasValue)
+            {
+                db.AddParam("codigoAtendimento", NpgsqlDbType.Integer, usuario.CodigoAtendimento.Value);
+            }
+            else
+            {
+                query.Replace("@codigoAtendimento", "NULL");
+            }
+
+            db.ExecuteNonQuery(query.ToString());
+
+            return idUsuario;
+        }
+
+        public static DataTable ListarPermissoesAcessoUsuario(BancoDadosBO db, int idUsuario)
+        {
+            db.AddParam("idUsuario", NpgsqlDbType.Integer, idUsuario);
+            db.AddParam("permitido", NpgsqlDbType.Boolean, true);
+
+            StringBuilder query = new StringBuilder();
+            query.Append("SELECT id_usuario, id_permissao_acesso, permitido ");
+            query.Append("FROM permissao_acesso_usuario ");
+            query.Append("WHERE id_usuario = @idUsuario and permitido = @permitido");
+
+            return db.Select(query.ToString());
+        }
+
+        public static DataTable ListarUsuarios(BancoDadosBO db, int idParceiro, string email, string nome, bool somenteAtivos, bool somenteVendedores, bool somenteAtendentes, int idParceiroAcesso)
+        {
+            db.AddParam("idParceiro", NpgsqlDbType.Integer, idParceiro);
+            db.AddParam("email", NpgsqlDbType.Varchar, email);
+            db.AddParam("nome", NpgsqlDbType.Varchar, nome);
+            db.AddParam("somenteAtivos", NpgsqlDbType.Boolean, somenteAtivos);
+            db.AddParam("somenteVendedores", NpgsqlDbType.Boolean, somenteVendedores);
+            db.AddParam("somenteAtendentes", NpgsqlDbType.Boolean, somenteAtendentes);
+            db.AddParam("idParceiroAcesso", NpgsqlDbType.Integer, idParceiroAcesso);
+            db.AddParam("idParceiroPrincipal", NpgsqlDbType.Integer, ParceiroCO.IdParceiroPrincipal);
+
+            StringBuilder query = new StringBuilder();
+            query.Append("SELECT t1.id_usuario, t1.email, t1.nome, t1.senha, t1.ativo, t1.vendedor, t1.hash_ativacao, t1.id_parceiro, t2.nome AS nome_parceiro, ");
+            query.Append("t3.id_parceiro AS id_parceiro_afiliador, t3.subdominio, t3.nome AS nome_parceiro_afiliador, t3.nome_fantasia AS nome_fantasia_parceiro_afiliador, ");
+            query.Append("t1.id_perfil_usuario, t1.data_hora_ultimo_acesso, t1.hash_nova_senha, t1.id_usuario_hash_nova_senha, t1.data_hora_hash_nova_senha, ");
+            query.Append("t2.situacao AS situacao_parceiro, t3.situacao AS situacao_parceiro_afiliador, t1.atendente ");
+            query.Append("FROM usuario t1 ");
+            query.Append("INNER JOIN parceiro t2 ON t1.id_parceiro = t2.id_parceiro ");
+            query.Append("INNER JOIN parceiro t3 ON t3.id_parceiro = (CASE WHEN t2.permite_afiliados = 'true' THEN t2.id_parceiro ELSE t2.id_parceiro_afiliador END) ");
+            query.Append("WHERE (t1.email = @email OR @email = '') AND ");
+            query.Append("(t1.nome LIKE @nome OR @nome = '') AND ");
+            query.Append("(t1.id_parceiro = @idParceiro OR @idParceiro = -1) AND ");
+            query.Append("((t1.ativo = 'true' AND @somenteAtivos = 'true') OR @somenteAtivos = 'false') AND ");
+            query.Append("((t1.vendedor = 'true' AND @somenteVendedores = 'true') OR @somenteVendedores = 'false') AND ");
+            query.Append("((t1.atendente = 'true' AND @somenteAtendentes = 'true') OR @somenteAtendentes = 'false') AND ");
+            query.Append("(t1.id_parceiro = @idParceiroAcesso OR @idParceiroAcesso = @idParceiroPrincipal OR t1.id_parceiro IN (SELECT t0.id_parceiro FROM parceiro t0 WHERE t0.id_parceiro_afiliador = @idParceiroAcesso)) ");
+            query.Append("ORDER BY nome");
+
+            return db.Select(query.ToString());
+        }
+
+        public static int RemoverPermissaoAcesso(BancoDadosBO db, int idUsuario, short permissaoAcesso)
+        {
+            db.AddParam("idUsuario", NpgsqlDbType.Integer, idUsuario);
+            db.AddParam("permissaoAcesso", NpgsqlDbType.Smallint, permissaoAcesso);
+
+            StringBuilder query = new StringBuilder();
+            query.Append("DELETE From permissao_acesso_usuario ");
+            query.Append("WHERE id_usuario = @idUsuario and id_permissao_acesso = @permissaoAcesso ");
+
+            return db.ExecuteNonQuery(query.ToString());
+        }
+
+        public static DataTable RetornaAtendente(BancoDadosBO db, int idUsuario)
+        {
+            db.AddParam("idUsuario", NpgsqlDbType.Integer, idUsuario);
+            db.AddParam("permitido", NpgsqlDbType.Boolean, true);
+
+            StringBuilder query = new StringBuilder();
+            query.Append("SELECT id_usuario, id_permissao_acesso, permitido ");
+            query.Append("FROM permissao_acesso_usuario ");
+            query.Append("WHERE id_usuario = @idUsuario and permitido = @permitido");
+
+            return db.Select(query.ToString());
+        }
+
+        public static DataTable RetornaInformacoesUsuarioPorEmail(BancoDadosBO db, string email)
+        {
+            db.AddParam("email", NpgsqlDbType.Varchar, email);
+
+            StringBuilder query = new StringBuilder();
+            query.Append("SELECT id_usuario, id_parceiro, id_externo FROM usuario ");
+            query.Append("WHERE email = @email");
+
+            return db.Select(query.ToString());
+        }
+
+        public static DataTable RetornaVendedores(BancoDadosBO db)
+        {
+            StringBuilder query = new StringBuilder();
+            query.Append("SELECT id_usuario, nome ");
+            query.Append("FROM usuario ");
+            query.Append("WHERE ativo = true and vendedor = true");
+
+            return db.Select(query.ToString());
+        }
+
+        public static int RetornaIdPerfilDoUsuarioPeloEmail(BancoDadosBO db, string email)
+        {
+            string query = @"SELECT 
+                                id_perfil_usuario 
+                            FROM 
+                                usuario 
+                            WHERE 
+                                email = @email";
+
+            db.AddParam("email", NpgsqlDbType.Varchar, email);
+
+            var tab = db.Select(query);
+
+            return int.Parse(tab.Rows[0]["id_perfil_usuario"].ToString());
+        }
+
+        public static string RetornaEmailDoUsuarioPeloId(BancoDadosBO db, int idUsuario)
+        {
+            string query = @"SELECT 
+                                email 
+                            FROM 
+                                usuario 
+                            WHERE 
+                                id_usuario = @idUsuario";
+
+            db.AddParam("idUsuario", NpgsqlDbType.Integer, idUsuario);
+
+            var result = db.Select(query.ToString());
+            return result.Rows.Count > 0 ? result.Rows[0]["email"].ToString() : string.Empty;
+        }
+    }
+}

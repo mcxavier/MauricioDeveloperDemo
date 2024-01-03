@@ -1,0 +1,63 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Schedules", "Schedules", "{CB1FCD9B-7F04-4DCA-A967-8285D5962E39}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PortalDoParceiro", "PortalDoParceiro", "{1A51653D-0E09-4FC7-A3EA-99076A49E316}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schedules.SincronismoSalesforce", "Schedules.SincronismoSalesforce\Schedules.SincronismoSalesforce.csproj", "{9E6B9370-1C12-4BF6-A9AB-B0E4257E5F14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hangfire", "Hangfire\Hangfire.csproj", "{ACBDDEF0-13A1-4D1B-A2AD-3A88D3DBC5B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library", "Library\Library.csproj", "{0AC92651-B459-4A7D-BDD2-604FDA5BFDDD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9E6B9370-1C12-4BF6-A9AB-B0E4257E5F14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E6B9370-1C12-4BF6-A9AB-B0E4257E5F14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E6B9370-1C12-4BF6-A9AB-B0E4257E5F14}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9E6B9370-1C12-4BF6-A9AB-B0E4257E5F14}.Debug|x86.Build.0 = Debug|Any CPU
+		{9E6B9370-1C12-4BF6-A9AB-B0E4257E5F14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E6B9370-1C12-4BF6-A9AB-B0E4257E5F14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E6B9370-1C12-4BF6-A9AB-B0E4257E5F14}.Release|x86.ActiveCfg = Release|Any CPU
+		{9E6B9370-1C12-4BF6-A9AB-B0E4257E5F14}.Release|x86.Build.0 = Release|Any CPU
+		{ACBDDEF0-13A1-4D1B-A2AD-3A88D3DBC5B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACBDDEF0-13A1-4D1B-A2AD-3A88D3DBC5B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACBDDEF0-13A1-4D1B-A2AD-3A88D3DBC5B3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ACBDDEF0-13A1-4D1B-A2AD-3A88D3DBC5B3}.Debug|x86.Build.0 = Debug|Any CPU
+		{ACBDDEF0-13A1-4D1B-A2AD-3A88D3DBC5B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACBDDEF0-13A1-4D1B-A2AD-3A88D3DBC5B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACBDDEF0-13A1-4D1B-A2AD-3A88D3DBC5B3}.Release|x86.ActiveCfg = Release|Any CPU
+		{ACBDDEF0-13A1-4D1B-A2AD-3A88D3DBC5B3}.Release|x86.Build.0 = Release|Any CPU
+		{0AC92651-B459-4A7D-BDD2-604FDA5BFDDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AC92651-B459-4A7D-BDD2-604FDA5BFDDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AC92651-B459-4A7D-BDD2-604FDA5BFDDD}.Debug|x86.ActiveCfg = Debug|x86
+		{0AC92651-B459-4A7D-BDD2-604FDA5BFDDD}.Debug|x86.Build.0 = Debug|x86
+		{0AC92651-B459-4A7D-BDD2-604FDA5BFDDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AC92651-B459-4A7D-BDD2-604FDA5BFDDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AC92651-B459-4A7D-BDD2-604FDA5BFDDD}.Release|x86.ActiveCfg = Release|x86
+		{0AC92651-B459-4A7D-BDD2-604FDA5BFDDD}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9E6B9370-1C12-4BF6-A9AB-B0E4257E5F14} = {CB1FCD9B-7F04-4DCA-A967-8285D5962E39}
+		{ACBDDEF0-13A1-4D1B-A2AD-3A88D3DBC5B3} = {1A51653D-0E09-4FC7-A3EA-99076A49E316}
+		{0AC92651-B459-4A7D-BDD2-604FDA5BFDDD} = {1A51653D-0E09-4FC7-A3EA-99076A49E316}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FC0A708B-8CE7-4F04-B23D-195C69690B5C}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
+EndGlobal
