@@ -1,0 +1,33 @@
+trigger:
+  branches:
+    include:
+    - master
+    - develop
+    - release/*
+variables:
+- name: buildConfiguration
+  value: 'Release'
+stages:
+- stage: __default
+  jobs:
+  - job: Job
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: CmdLine@2
+      displayName: 'dotnet publish src/Api/Api.csproj $(buildConfiguration) -o $(Build.BinariesDirectory)'
+      inputs:
+        script: dotnet publish src/Api/Api.csproj --configuration $(buildConfiguration) -o $(Build.BinariesDirectory)
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(Build.BinariesDirectory)'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+        replaceExistingArchive: true
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'build'
+        publishLocation: 'Container'
+

@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "storage1": {
+      "type": "storage",
+      "connectionId": "DefaultEndpointsProtocol=https;AccountName=smartsalesstage;AccountKey=hUxw1fq6cU26LqMz/hI1d+0cGVbSGnLQsWYO4GAhW93fR/IYY4sz66hTJLxnfhccXPUhhkPnnndzwpPo8G+8Cw==;EndpointSuffix=core.windows.net"
+    }
+  }
+}

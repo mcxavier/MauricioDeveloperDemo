@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "LinxIO": {
+      "commandName": "Project",
+      "workingDirectory": "$(ProjectDirectory)",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      },
+      "nativeDebugging": false
+    }
+  }
+}
