@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<unitTest version="1">
+    <file path="C:\BRADESCO\BACKEND\bcpf-bff-cartoes-seguros\tests\src\controllers\DadosSeguroController.test.ts">
+        <testCase name="DadosSeguroController Deve retornar 200 ao bater na rota" duration="24"/>
+        <testCase name="DadosSeguroController Deve retornar 500 ao bater na rota" duration="4"/>
+        <testCase name="DadosSeguroController Cancelar Seguro - Deve retornar 200 ao bater na rota" duration="6"/>
+        <testCase name="DadosSeguroController Cancelar Seguro - Deve retornar 500 ao bater na rota" duration="11"/>
+        <testCase name="DadosSeguroController Contratar Seguro - Deve retornar 200 ao bater na rota" duration="4"/>
+        <testCase name="DadosSeguroController Contratar Seguro - Deve retornar 500 ao bater na rota" duration="6"/>
+    </file>
+    <file path="C:\BRADESCO\BACKEND\bcpf-bff-cartoes-seguros\tests\src\config\Router.test.ts">
+        <testCase name="should test routes" duration="0"/>
+        <testCase name="Router health" duration="9"/>
+        <testCase name="Router listarCartoes" duration="10"/>
+        <testCase name="Router dadosSeguro" duration="4"/>
+        <testCase name="Router contratarSeguro" duration="12"/>
+        <testCase name="Router cancelarSeguro" duration="5"/>
+        <testCase name="Router listarBeneficiosSeguro" duration="12"/>
+    </file>
+    <file path="C:\BRADESCO\BACKEND\bcpf-bff-cartoes-seguros\tests\src\controllers\ListarCartaoController.test.ts">
+        <testCase name="ListaCartaoController Deve retornar 200 ao bater na rota" duration="13"/>
+        <testCase name="ListaCartaoController Deve retornar 500 ao bater na rota" duration="4"/>
+    </file>
+    <file path="C:\BRADESCO\BACKEND\bcpf-bff-cartoes-seguros\tests\src\controllers\BeneficiosSeguroController.test.ts">
+        <testCase name="BeneficiosSeguroController Deve retornar 200 ao bater na rota" duration="7"/>
+        <testCase name="BeneficiosSeguroController Deve retornar 500 ao bater na rota" duration="4"/>
+    </file>
+    <file path="C:\BRADESCO\BACKEND\bcpf-bff-cartoes-seguros\tests\src\controllers\HealthController.test.ts">
+        <testCase name="Health Controller Health GET" duration="7"/>
+    </file>
+    <file path="C:\BRADESCO\BACKEND\bcpf-bff-cartoes-seguros\tests\src\utils\Mcent.test.ts">
+        <testCase name="Mcent Deve instanciar o mcent" duration="1"/>
+        <testCase name="Mcent Deve gravarMcent" duration="5"/>
+        <testCase name="Mcent Deve gravarMcent" duration="2"/>
+        <testCase name="Mcent Deve testar getStatelessHeadersBase64 com sucesso" duration="1"/>
+        <testCase name="Mcent Deve gerarErro ao logDadosLibAntiFraude" duration="1"/>
+        <testCase name="Mcent Deve gerar sucesso ao logarDadosInferencia" duration="1"/>
+        <testCase name="Mcent Deve gerar exception ao logarDadosInferencia" duration="0"/>
+        <testCase name="Mcent Deve testar getDadosInferencia com sucesso" duration="1"/>
+    </file>
+    <file path="C:\BRADESCO\BACKEND\bcpf-bff-cartoes-seguros\tests\src\services\DadosSeguroService.test.ts">
+        <testCase name="Listar dados seguro Services Dados Seguros - 200" duration="2"/>
+        <testCase name="Listar dados seguro Services Contratar Seguros - 200" duration="1"/>
+        <testCase name="Listar dados seguro Services Cancelar Seguros - 200" duration="0"/>
+        <testCase name="Listar dados seguro Services dados Seguros - 403" duration="1"/>
+        <testCase name="Listar dados seguro Services Cancelar Seguros - 403" duration="1"/>
+        <testCase name="Listar dados seguro Services Contratar Seguros - 403" duration="0"/>
+        <testCase name="Listar dados seguro Services Deve retornar status 503 quando não houver objeto de erro" duration="1"/>
+        <testCase name="Listar dados seguro Services Deve retornar status 503 quando não houver objeto de erro" duration="0"/>
+        <testCase name="Listar dados seguro Services Deve retornar status 503 quando não houver objeto de erro" duration="1"/>
+        <testCase name="Listar dados seguro Services Dados Seguros - Erro" duration="1"/>
+        <testCase name="Listar dados seguro Services Dados Seguros - Erro" duration="0"/>
+        <testCase name="Listar dados seguro Services Dados Seguros - Erro" duration="1"/>
+        <testCase name="Listar dados seguro Services Dados Seguros - Return Response" duration="0"/>
+        <testCase name="Listar dados seguro Services Dados Seguros - Return Response" duration="1"/>
+        <testCase name="Listar dados seguro Services Dados Seguros - Return Response" duration="0"/>
+    </file>
+    <file path="C:\BRADESCO\BACKEND\bcpf-bff-cartoes-seguros\tests\src\infra\WrapperAxios.test.ts">
+        <testCase name="WrapperAxios Deve retornar status 200 ao acionar metodo: GET, no WrapperAxios" duration="1"/>
+        <testCase name="WrapperAxios Deve retornar status 500 ao acionar metodo: GET, no WrapperAxios" duration="1"/>
+        <testCase name="WrapperAxios Deve retornar status 200 ao acionar metodo: POST, no WrapperAxios" duration="0"/>
+        <testCase name="WrapperAxios Deve retornar status 500 ao acionar metodo: POST, no WrapperAxios" duration="1"/>
+        <testCase name="WrapperAxios Deve retornar status 200 ao acionar metodo: PUT, no WrapperAxios" duration="0"/>
+        <testCase name="WrapperAxios Deve retornar status 500 ao acionar metodo: PUT, no WrapperAxios" duration="1"/>
+        <testCase name="WrapperAxios Deve retornar status 200 ao acionar metodo: DELETE, no WrapperAxios" duration="0"/>
+        <testCase name="WrapperAxios Deve retornar status 500 ao acionar metodo: DELETE, no WrapperAxios" duration="0"/>
+    </file>
+    <file path="C:\BRADESCO\BACKEND\bcpf-bff-cartoes-seguros\tests\src\services\ListarCartoesService.test.ts">
+        <testCase name="Listar Cartões - Services Teste unitário - POST" duration="2"/>
+    </file>
+    <file path="C:\BRADESCO\BACKEND\bcpf-bff-cartoes-seguros\tests\src\services\AutenticarGatewayService.test.ts">
+        <testCase name="AutenticarGatewayService Deve retornar autenticação quando chamar Service" duration="1"/>
+        <testCase name="AutenticarGatewayService Deve validar o retorno com erro ao chamar service" duration="1"/>
+    </file>
+    <file path="C:\BRADESCO\BACKEND\bcpf-bff-cartoes-seguros\tests\src\services\BeneficiosSeguroService.test.ts">
+        <testCase name="Listar beneficios do seguro - Services Deve retornar status 200 ao acionar metodo: estados com verbo - GET" duration="2"/>
+        <testCase name="Listar beneficios do seguro - Services Deve retornar status 503 ao acionar metodo com parametros invalidos" duration="1"/>
+        <testCase name="Listar beneficios do seguro - Services Deve retornar status 503 quando não houver objeto de erro" duration="1"/>
+        <testCase name="Listar beneficios do seguro - Services Deve validar o retorno com erro do método de consulta de oferta" duration="0"/>
+        <testCase name="Listar beneficios do seguro - Services Deve retornar ServerResponse ao acionar metodo: estados com verbo - GET" duration="1"/>
+    </file>
+    <file path="C:\BRADESCO\BACKEND\bcpf-bff-cartoes-seguros\tests\src\config\Logger.test.ts">
+        <testCase name="Teste de criacao do Logger Verifica a instancia de Logger" duration="1"/>
+        <testCase name="Teste de criacao do Logger Verifica o metodo error" duration="1"/>
+        <testCase name="Teste de criacao do Logger Verifica o metodo info" duration="0"/>
+        <testCase name="Teste de criacao do Logger Verifica a metodo info com erro no JSON.stringify" duration="0"/>
+        <testCase name="Teste de criacao do Logger Verifica a metodo info com 3 parâmetros" duration="1"/>
+        <testCase name="Teste de criacao do Logger Verifica método log com msg" duration="0"/>
+    </file>
+    <file path="C:\BRADESCO\BACKEND\bcpf-bff-cartoes-seguros\tests\src\http\axios-http-client.test.ts">
+        <testCase name="Axios Endpoints Deve validar a chamada e retorno do método get" duration="1"/>
+        <testCase name="Axios Endpoints Deve validar a chamada e retorno do método post" duration="1"/>
+        <testCase name="Axios Endpoints Deve validar o erro no retorno do método get" duration="1"/>
+        <testCase name="Axios Endpoints Deve validar o erro no retorno do método post" duration="1"/>
+    </file>
+    <file path="C:\BRADESCO\BACKEND\bcpf-bff-cartoes-seguros\tests\src\swagger\Swagger.test.ts">
+        <testCase name="swagger" duration="0"/>
+    </file>
+    <file path="C:\BRADESCO\BACKEND\bcpf-bff-cartoes-seguros\tests\src\exception\ErrorMiddleware.test.ts">
+        <testCase name="should test ErrorMiddleware" duration="0"/>
+    </file>
+    <file path="C:\BRADESCO\BACKEND\bcpf-bff-cartoes-seguros\tests\src\config\ErrorHandler.test.ts">
+        <testCase name="should test ErrorHandler" duration="0"/>
+    </file>
+    <file path="C:\BRADESCO\BACKEND\bcpf-bff-cartoes-seguros\tests\src\exception\ExceptionErroSistema.test.ts">
+        <testCase name="ExceptionErroSistema should test ErrorHandler" duration="1"/>
+    </file>
+    <file path="C:\BRADESCO\BACKEND\bcpf-bff-cartoes-seguros\tests\src\exception\ExceptionUtils.test.ts">
+        <testCase name="ExceptionUtils should test indisponibilidade" duration="0"/>
+        <testCase name="ExceptionUtils should test proibicao" duration="1"/>
+        <testCase name="ExceptionUtils should test pedidoRuim" duration="0"/>
+    </file>
+    <file path="C:\BRADESCO\BACKEND\bcpf-bff-cartoes-seguros\tests\src\config\env.test.ts">
+        <testCase name="should env" duration="1"/>
+    </file>
+</unitTest>

@@ -1,0 +1,14 @@
+{
+  "envFrom": [
+    {
+      "configMapRef": {
+        "name": "bcpf-bff-cartoes-seguros"
+      }
+    },
+    {
+      "configMapRef": {
+        "name": "stateless"
+      }
+    }
+  ]
+}

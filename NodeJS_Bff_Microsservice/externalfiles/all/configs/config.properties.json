@@ -1,0 +1,87 @@
+{
+    "env": [
+        {
+            "name": "APP_VERSION",
+            "valueFrom": {
+                "fieldRef": {
+                    "apiVersion": "v1",
+                    "fieldPath": "metadata.labels['version']"
+                }
+            }
+        },
+        {
+            "name": "APP_NAME",
+            "valueFrom": {
+                "fieldRef": {
+                    "apiVersion": "v1",
+                    "fieldPath": "metadata.labels['app']"
+                }
+            }
+        },
+        {
+            "name": "LOG_LEVEL",
+            "value": "info"
+        }   ,        
+        {
+            "name": "LOG_EVENT_TRANSPORT_PEM",
+            "valueFrom": {
+                "secretKeyRef": {
+                    "key": "LOG_EVENT_TRANSPORT_PEM",
+                    "name": "eventstreams-certs"
+                }
+            }
+        },
+        {
+            "name": "LOG_EVENT2_TRANSPORT_PEM",
+            "valueFrom": {
+                "secretKeyRef": {
+                    "key": "LOG_EVENT2_TRANSPORT_PEM",
+                    "name": "eventstreams-certs"
+                }
+            }
+        },
+        {
+            "name": "sasl.jaas.config",
+            "valueFrom": {
+                "secretKeyRef": {
+                    "key": "sasl.jaas.config",
+                    "name": "bcpf-secret-token"
+                }
+            }
+        },
+        {
+            "name": "API_LISTAR_CARTOES",
+            "value": "https://bcpf-srv-cartoes-listar.pfl2.svc.cluster.local"
+        },
+        {
+            "name": "API_SRV_GATEWAY_CARTOES_AUTENTICAR",
+            "value": "http://bcpf-srv-gateway-cartoes-autenticar.pfl2.svc.cluster.local"
+        },
+        {
+            "name": "API_SRV_SEGUROS",
+            "value": "http://bcpf-srv-cartoes-seguros.pfl2.svc.cluster.local"
+        }
+    ],
+    "envFrom": [
+        {
+            "configMapRef": {
+                "name": "stateless"
+            }
+        },
+        {
+            "configMapRef": {
+                "name": "bcpf-lib-mcent-configmap"
+            }
+        },
+        {
+            "configMapRef": {
+                "name": "eventstreams"
+            }
+        },
+        {
+            "secretRef": {
+                "name": "api-log"
+            }
+        }
+    ]
+}

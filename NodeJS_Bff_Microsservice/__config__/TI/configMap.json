@@ -1,0 +1,12 @@
+{
+  "apiVersion": "v1",
+  "kind": "ConfigMap",
+  "metadata": {
+    "name": "bcpf-bff-cartoes-seguros",
+    "namespace": "pfl2"
+  },
+  "data": {
+    "INTERNAL_BRAND_ID": "0115bc0f-40a3-47a9-b321-8fbf91c14f79",
+    "URL_SUFIXO": "-pfl2.pf.cloud.corpti.bradesco.com.br"
+  }
+}

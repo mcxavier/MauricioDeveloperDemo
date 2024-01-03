@@ -1,0 +1,15 @@
+{
+  "apiVersion": "v1",
+  "kind": "ConfigMap",
+  "metadata": {
+    "annotations": {},
+    "name": "bcpf-bff-cartoes-seguros",
+    "namespace": "pfl2",
+    "selfLink": "/api/v1/namespaces/pfl2/configmaps/bcpf-bff-cartoes-seguros",
+    "uid": "fa523e52-d0a4-11eb-a1d0-005056a3835d"
+  },
+  "data": {
+    "INTERNAL_BRAND_ID": "0115bc0f-40a3-47a9-b321-8fbf91c14f79",
+    "URL_SUFIXO": "-pfl2.pf.cloud.interneth.bradesco.com.br"
+  }
+}

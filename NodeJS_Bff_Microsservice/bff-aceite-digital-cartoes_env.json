@@ -1,0 +1,33 @@
+[
+  {
+    "env": [
+      {
+        "name": "APP_VERSION",
+        "valueFrom": {
+          "fieldRef": {
+            "apiVersion": "v1",
+            "fieldPath": "metadata.labels['version']"
+          }
+        }
+      },
+      {
+        "name": "APP_NAME",
+        "valueFrom": {
+          "fieldRef": {
+            "apiVersion": "v1",
+            "fieldPath": "metadata.labels['app']"
+          }
+        }
+      }
+    ],
+    "envFrom": [
+      {
+        "configMapRef": {
+          "name": "stateless"
+        }
+      }
+    ],
+    "volumes": [],
+    "volumeMounts": []
+  }
+]
